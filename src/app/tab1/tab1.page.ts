@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -8,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Tab1Page implements OnInit {
   // Step 2. 在 constructor 裡面注入 HttpClient
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private alertController: AlertController,
+  ) {}
 
   // Step 3. 撰寫呼叫 api 的程式碼
   ngOnInit() {
@@ -16,10 +20,17 @@ export class Tab1Page implements OnInit {
   }
 
   async initialize() {
-    // 在元件初始化的時候，透過後端 api 取得資料
-    const response = await this.getAllNotificationsFromApi();
+    try {
+      // 在元件初始化的時候，透過後端 api 取得資料
+      const response = await this.getAllNotificationsFromApi();
 
-    console.log(response);
+      console.log(response);
+    } catch (error) {
+      // Step 4. 過程中如果發生錯誤，需要另外進行的錯誤處理
+      console.error(error);
+
+      this.presentErrorAlert();
+    }
   }
 
   /**
@@ -35,5 +46,18 @@ export class Tab1Page implements OnInit {
     const response = await this.http.get<any>(url).toPromise();
 
     return response;
+  }
+
+  /**
+   * 顯示取得資料失敗的錯誤訊息
+   */
+  async presentErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'Sorry, please try again later.',
+      buttons: ['OK'],
+    });
+
+    alert.present();
   }
 }
