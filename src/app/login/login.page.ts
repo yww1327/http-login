@@ -17,10 +17,10 @@ export class LoginPage {
 
   submit() {
     if (this.email === 'jonz94@jonz94.dev' && this.password === '12345678') {
-      this.navController.navigateForward('/tabs');
-    } else {
-      this.presentLoginFailedAlert();
+      return this.navController.navigateForward('/tabs');
     }
+
+    this.presentLoginFailedAlert();
   }
 
   async presentLoginFailedAlert() {
