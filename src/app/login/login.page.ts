@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +10,11 @@ export class LoginPage {
   email = '';
   password = '';
 
-  constructor() {}
+  constructor(private navController: NavController) {}
 
   submit() {
-    // TODO:
+    if (this.email === 'jonz94@jonz94.dev' && this.password === '12345678') {
+      this.navController.navigateForward('/tabs');
+    }
   }
 }
