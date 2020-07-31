@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page {
-  constructor() {}
+  // Step 2. 在 constructor 裡面注入 HttpClient
+  constructor(private http: HttpClient) {}
 }
