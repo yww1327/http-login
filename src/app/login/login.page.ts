@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
+  email = '';
+  password = '';
+
   constructor() {}
+
+  submit() {
+    // TODO:
+  }
 }
