@@ -1,17 +1,18 @@
 {
   "name": "ionic-http-demo",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "private": true,
+  "description": "An Ionic project",
   "homepage": "https://ionicframework.com/",
+  "author": "Ionic Framework",
   "scripts": {
+    "build": "ng build",
+    "e2e": "ng e2e",
+    "lint": "ng lint",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "~10.0.7",
     "@angular/core": "~10.0.7",
@@ -54,6 +55,5 @@
     "ts-node": "^8.10.2",
     "tslint": "^6.1.2",
     "typescript": "~3.9.7"
-  },
-  "description": "An Ionic project"
+  }
 }
