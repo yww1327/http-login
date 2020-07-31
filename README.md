@@ -13,6 +13,8 @@ Setup
 step by step
 ---
 
+P.S. 可以透過 git graph (https://gitlab.com/cocoing.info/ionic-http-demo/-/network/master) 來查看詳細內容
+
 1. 在 AppModule 裡面，引入 HttpClientModule
 2. 在 constructor 裡面注入 HttpClient
 3. 撰寫呼叫 api 的程式碼
