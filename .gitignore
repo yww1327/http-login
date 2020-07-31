@@ -29,3 +29,6 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+# do not ignore .vscode directory
+!.vscode/
