@@ -8,6 +8,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
+  rawResponse = null;
+
   // Step 2. 在 constructor 裡面注入 HttpClient
   constructor(
     private http: HttpClient,
@@ -25,6 +27,9 @@ export class Tab1Page implements OnInit {
       const response = await this.getAllNotificationsFromApi();
 
       console.log(response);
+
+      // Step 5. 將資料顯示到畫面上
+      this.rawResponse = response;
     } catch (error) {
       // Step 4. 過程中如果發生錯誤，需要另外進行的錯誤處理
       console.error(error);
