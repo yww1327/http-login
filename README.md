@@ -27,7 +27,7 @@ P.S. 可以透過 git graph (https://gitlab.com/cocoing.info/ionic-http-demo/-/n
 ---
 
 1. 先到 https://next.cocoing.info 註冊一個帳號
-2. 接著到後台登入頁面 https://api.next.cocoing.info/d/login，輸入剛剛註冊的帳號密碼
+2. 接著到後台登入頁面 https://api.next.cocoing.info/d/login 輸入剛剛註冊的帳號密碼
 3. 成功登入後台後，就可以到 api 文件頁面 https://api.next.cocoing.info/doc 查看文件
 
 > 如果在步驟 3 開啟 api 文件頁面 https://api.next.cocoing.info/doc 看到的是 404 not found
