@@ -7,6 +7,14 @@
 </ion-header>
 
 <ion-content>
-  <!-- 這邊只是把從後端取得的資料直接整坨印在畫面上XD -->
-  <pre>{{ rawResponse | json }}</pre>
+  <div style="text-align: center; padding: 30px;">
+    <ion-button (click)="navToAddPage()">Add New Notification</ion-button>
+    <ion-list *ngFor="let notification of notifications; let i of index;">
+      <ion-item>
+        <ion-text (click)="navToDetailPage(i)">{{ notification.title }}</ion-text>
+        <ion-button (click)="navToUpdatePage(i)" fill="clear" style="position: absolute; right: 30px;"><ion-icon name="create"></ion-icon></ion-button>
+        <ion-button (click)="delete(i)" fill="clear" style="position: absolute; right: 0px;"><ion-icon name="trash"></ion-icon></ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
