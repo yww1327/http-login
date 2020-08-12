@@ -9,16 +9,16 @@
 
 <ion-content>
   <div style="padding: 30px;">
-    <ion-list style="text-align: center;">
-      <ion-item>
+    <ion-list style="width: 80%; text-align: center; margin: auto;">
+      <ion-item style="margin-top: 3%;">
         <ion-label position="floating">Title</ion-label>
         <ion-input [(ngModel)]="title" required></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item style="margin-top: 3%;">
         <ion-label position="floating">Description</ion-label>
         <ion-input [(ngModel)]="description" required></ion-input>
       </ion-item>
-      <ion-button (click)="submit()" style="margin-top: 50px;">Submit</ion-button>
+      <ion-button (click)="submit()" style="margin-top: 5%;">Submit</ion-button>
     </ion-list>
   </div>
 </ion-content>

@@ -1,26 +1,28 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <!-- 輸入 email -->
-    <ion-item>
-      <ion-label position="floating">email</ion-label>
-      <ion-input [(ngModel)]="email"></ion-input>
-    </ion-item>
+<div class="container">
+  <ion-content>
+    <ion-list>
+      <!-- 輸入 email -->
+      <ion-item id="emailInput">
+        <ion-label position="floating">email</ion-label>
+        <ion-input [(ngModel)]="email"></ion-input>
+      </ion-item>
 
-    <!-- 輸入密碼 -->
-    <ion-item>
-      <ion-label position="floating">password</ion-label>
-      <ion-input [(ngModel)]="password" type="password"></ion-input>
-    </ion-item>
+      <!-- 輸入密碼 -->
+      <ion-item id="passwdInput">
+        <ion-label position="floating">password</ion-label>
+        <ion-input [(ngModel)]="password" type="password"></ion-input>
+      </ion-item>
 
-    <!-- 送出按鈕 -->
-    <ion-item>
-      <ion-button (click)="submit()">submit</ion-button>
-    </ion-item>
-  </ion-list>
-</ion-content>
+      <!-- 送出按鈕 -->
+      <ion-item lines="none">
+        <ion-button (click)="submit()" id="submitBtn" size="default">submit</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</div>

@@ -1,9 +1,10 @@
 import { Component, OnInit, SimpleChange } from '@angular/core';
 import { AlertController, ViewWillEnter } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
-import { NotificationService } from 'src/app/notification.service';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -18,21 +19,23 @@ export class Tab1Page implements OnInit {
   constructor(
     private alertController: AlertController,
     private navCtrl: NavController,
-    private notificationService: NotificationService,
-    private route: ActivatedRoute
-  ) {
-    route.params.subscribe(val => this.initialize());
-  }
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) { }
 
   // Step 3. 撰寫呼叫 api 的程式碼
   ngOnInit() {
-    this.initialize();
+    if(!(JSON.parse(localStorage.getItem('access_token')))) {
+      this.navCtrl.navigateForward('/login');
+    } else {
+    this.route.params.subscribe(val => this.initialize());
+    }
   }
 
   async initialize() {
     try {
       // 在元件初始化的時候，透過後端 api 取得資料
-      const response = await this.notificationService.getAllNotificationsFromApi();
+      const response = await this.getAllNotificationsFromApi();
       // Step 5. 將資料顯示到畫面上
       this.rawResponse = response;
       this.notifications = this.rawResponse["data"];
@@ -41,6 +44,18 @@ export class Tab1Page implements OnInit {
       console.error(error);
       this.presentErrorAlert();
     }
+  }
+
+  async getAllNotificationsFromApi() {
+    const url = 'https://api.next.cocoing.info/admin/notifications';
+    const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${accessToken}`,
+      }),
+    };
+    const response = await this.http.get<Response>(url, httpOptions).toPromise();
+    return response;
   }
 
   /**
@@ -70,12 +85,60 @@ export class Tab1Page implements OnInit {
 
   async delete(index) {
     try {
-      const response = await this.notificationService.deleteNotificationFromApi(index.id);
-      window.location.reload();
+      const response = await this.deleteNotificationFromApi(JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'], index.id);
+      this.initialize();
     } catch(error) {
       console.error(error);
-      catchError(this.notificationService.handleError);
+      catchError(this.handleError);
     }
+  }
+
+  async deleteNotificationFromApi(accessToken: string, id) {
+    const url = 'https://api.next.cocoing.info/admin/notifications';
+    const body = {
+      id: id
+    }
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${accessToken}`,
+        'X-HTTP-Method-Override': 'delete',
+      }),
+    };
+    const response = await this.http.post<Response>(url, body, httpOptions).toPromise();
+    return response;
+  }
+
+  handleError = (error: HttpErrorResponse) => {
+    if (error.error instanceof ErrorEvent) {
+      // "前端本身" or "沒連上網路" 而產生的錯誤
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // 後端回傳的錯誤訊息，error.error 之中會有為何失敗的原因
+      console.error(`HTTP status code ${error.status}, reason:`, error.error);
+    }
+    // 最後的回傳值的型別應為 observable
+    return throwError('Something bad happened; please try again later.');
+  };
+
+  logout() {
+    /*try {
+      localStorage.removeItem('access_token');
+      this.navCtrl.navigateForward('/login');
+    } catch(error) {
+      console.error(error);
+    }*/
+    const url = 'https://api.next.cocoing.info/v1/logout';
+    const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${accessToken}`,
+      }),
+    };
+
+    return this.http.delete<Response>(url, httpOptions).subscribe( data => {
+      this.navCtrl.navigateForward('/login');
+      localStorage.removeItem('access_token');
+    });
   }
 
 }

@@ -1,9 +1,23 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar style="overflow: hidden;">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
     </ion-buttons>
     <h4>Notification Detail</h4>
+
+    <ion-item lines="none" slot="end" class="ion-text">
+      <ion-text slot="start" color="primary" >Created by</ion-text>
+      <ion-text slot="start">{{ creator }}</ion-text>
+      <ion-text slot="start" color="primary">at</ion-text>
+      <ion-text slot="start">{{ created_at }}</ion-text>
+    </ion-item>
+
+    <ion-item lines="none" slot="end" class="ion-text">
+      <ion-text slot="start" color="primary">Edited by</ion-text>
+      <ion-text slot="start">{{ editor }}</ion-text>
+      <ion-text slot="start" color="primary">at</ion-text>
+      <ion-text slot="start">{{ edited_at }}</ion-text>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
 
