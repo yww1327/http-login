@@ -6,4 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+  <ion-button (click)="takePicture()">TAKE</ion-button>
+  <ion-img [src]="imageUrl"></ion-img>
+</ion-content>
