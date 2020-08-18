@@ -47,7 +47,7 @@ export class Tab1Page implements OnInit {
   }
 
   async getAllNotificationsFromApi() {
-    const url = 'https://api.next.cocoing.info/admin/notifications';
+    const url = 'https://api.cocoing.info/admin/notifications';
     const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
     const httpOptions = {
       headers: new HttpHeaders({
@@ -85,7 +85,7 @@ export class Tab1Page implements OnInit {
 
   async delete(index) {
     try {
-      const response = await this.deleteNotificationFromApi(JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'], index.id);
+      const response = await this.deleteNotificationFromApi(index.id);
       this.initialize();
     } catch(error) {
       console.error(error);
@@ -93,11 +93,12 @@ export class Tab1Page implements OnInit {
     }
   }
 
-  async deleteNotificationFromApi(accessToken: string, id) {
-    const url = 'https://api.next.cocoing.info/admin/notifications';
+  async deleteNotificationFromApi(id) {
+    const url = 'https://api.cocoing.info/admin/notifications';
     const body = {
       id: id
     }
+    const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: `Bearer ${accessToken}`,
@@ -107,6 +108,42 @@ export class Tab1Page implements OnInit {
     const response = await this.http.post<Response>(url, body, httpOptions).toPromise();
     return response;
   }
+
+  async publish(index) {
+    try {
+      const response = await this.sendNotificationFromApi(index.id);
+    } catch(error) {
+      console.error(error);
+      catchError(this.handleError);
+    }
+  }
+
+  async sendNotificationFromApi(id) {
+    const url = 'https://api.cocoing.info/admin/notifications/send';
+    const body = {
+      id: id
+    };
+    const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer $(accessToken)`,
+      })
+    };
+    return this.http.post<Response>(url, body, httpOptions).subscribe( data => {
+      this.presentAlert();
+    });
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Published',
+      //message: 'Sorry, please try again.',
+      buttons: ['OK']
+    });
+
+    alert.present();
+  }
+
 
   handleError = (error: HttpErrorResponse) => {
     if (error.error instanceof ErrorEvent) {
@@ -127,7 +164,7 @@ export class Tab1Page implements OnInit {
     } catch(error) {
       console.error(error);
     }*/
-    const url = 'https://api.next.cocoing.info/v1/logout';
+    const url = 'https://api.cocoing.info/v1/logout';
     const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
     const httpOptions = {
       headers: new HttpHeaders({

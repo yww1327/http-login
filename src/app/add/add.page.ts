@@ -36,7 +36,7 @@ export class AddPage implements OnInit {
   }
 
   async creatNewNotificationFromApi(title, description) {
-    const url = 'https://api.next.cocoing.info/admin/notifications';
+    const url = 'https://api.cocoing.info/admin/notifications';
     const body = {
       title: title,
       description: description

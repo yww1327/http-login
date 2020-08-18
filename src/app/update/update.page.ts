@@ -64,7 +64,7 @@ export class UpdatePage implements OnInit {
   }
   
   async getAllNotificationsFromApi() {
-    const url = 'https://api.next.cocoing.info/admin/notifications';
+    const url = 'https://api.cocoing.info/admin/notifications';
     const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
     const httpOptions = {
       headers: new HttpHeaders({
@@ -76,7 +76,7 @@ export class UpdatePage implements OnInit {
   }
 
   async updateNotificationFromApi(id, title, description) {
-    const url = 'https://api.next.cocoing.info/admin/notifications';
+    const url = 'https://api.cocoing.info/admin/notifications';
     const body = {
       id: id,
       title: title,

@@ -15,6 +15,7 @@
     <ion-list *ngFor="let notification of notifications; let i of index;">
       <ion-item>
         <ion-text (click)="navToDetailPage(i)">{{ notification.title }}</ion-text>
+        <ion-button (click)="publish(i)" fill="clear" style="position: absolute; right: 60px;"><ion-icon name="send"></ion-icon></ion-button>
         <ion-button (click)="navToUpdatePage(i)" fill="clear" style="position: absolute; right: 30px;"><ion-icon name="create"></ion-icon></ion-button>
         <ion-button (click)="delete(i)" fill="clear" style="position: absolute; right: 0px;"><ion-icon name="trash"></ion-icon></ion-button>
       </ion-item>

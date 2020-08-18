@@ -39,7 +39,7 @@ export class LoginPage implements OnInit {
 
   async logInFromApi() {
     const response =  await new Promise((resolve, reject) => {
-      const url = 'https://api.next.cocoing.info/v1/login';
+      const url = 'https://api.cocoing.info/v1/login';
       const body = {
         email: this.email,
         password: this.password
@@ -68,7 +68,7 @@ export class LoginPage implements OnInit {
 
   async logInByAccessTokenFromApi() {
     const response = new Promise((resolve, reject) => {
-      const url = 'https://api.next.cocoing.info/v1/login';
+      const url = 'https://api.cocoing.info/v1/login';
       const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
       const httpOptions = {
         headers: new HttpHeaders({
