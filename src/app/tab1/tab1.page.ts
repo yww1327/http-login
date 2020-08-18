@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChange } from '@angular/core';
+import { Component, OnInit, SimpleChange, ElementRef } from '@angular/core';
 import { AlertController, ViewWillEnter } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { catchError, mergeMap } from 'rxjs/operators';
@@ -20,7 +20,8 @@ export class Tab1Page implements OnInit {
     private alertController: AlertController,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private el: ElementRef<HTMLElement>
   ) { }
 
   // Step 3. 撰寫呼叫 api 的程式碼
@@ -43,6 +44,15 @@ export class Tab1Page implements OnInit {
       // Step 4. 過程中如果發生錯誤，需要另外進行的錯誤處理
       console.error(error);
       this.presentErrorAlert();
+    }
+  }
+
+  checkSameUser(name) {
+    const currentUser = JSON.parse(localStorage.getItem('access_token'))['data']['user']['name'];
+    if(name === currentUser) {
+      return true;
+    } else {
+      return false;
     }
   }
 

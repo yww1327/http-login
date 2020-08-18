@@ -14,10 +14,12 @@
     <ion-button (click)="navToAddPage()">Add New Notification</ion-button>
     <ion-list *ngFor="let notification of notifications; let i of index;">
       <ion-item>
-        <ion-text (click)="navToDetailPage(i)">{{ notification.title }}</ion-text>
-        <ion-button (click)="publish(i)" fill="clear" style="position: absolute; right: 60px;"><ion-icon name="send"></ion-icon></ion-button>
-        <ion-button (click)="navToUpdatePage(i)" fill="clear" style="position: absolute; right: 30px;"><ion-icon name="create"></ion-icon></ion-button>
-        <ion-button (click)="delete(i)" fill="clear" style="position: absolute; right: 0px;"><ion-icon name="trash"></ion-icon></ion-button>
+        <ion-text (click)="navToDetailPage(i)" style="position: absolute; left: 20px;">{{ notification.title }}</ion-text>
+        <ng-container *ngIf="checkSameUser(notification.creator.name)">
+          <ion-button (click)="publish(i)" color="danger" style="position: absolute; right: 0px;">PUBLISH</ion-button>
+        </ng-container>
+        <ion-button (click)="navToUpdatePage(i)" fill="clear" style="position: absolute; right: 110px;"><ion-icon name="create"></ion-icon></ion-button>
+        <ion-button (click)="delete(i)" fill="clear" style="position: absolute; right: 80px;"><ion-icon name="trash"></ion-icon></ion-button>
       </ion-item>
     </ion-list>
   </div>
