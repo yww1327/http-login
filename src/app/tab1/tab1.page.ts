@@ -126,7 +126,7 @@ export class Tab1Page implements OnInit {
     const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
     const httpOptions = {
       headers: new HttpHeaders({
-        Authorization: `Bearer $(accessToken)`,
+        Authorization: `Bearer ${accessToken}`,
       })
     };
     return this.http.post<Response>(url, body, httpOptions).subscribe( data => {
