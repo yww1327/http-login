@@ -1,10 +1,10 @@
-import { Component, OnInit, SimpleChange, ElementRef } from '@angular/core';
-import { AlertController, ViewWillEnter } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap, delay, map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { throwError, of } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -12,29 +12,31 @@ import { throwError } from 'rxjs';
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
-  rawResponse = null;
-  notifications = null;
+  /*rawResponse = null;
+  notifications = null;*/
+
+  accessToken = '';
+  data$ = of(null);
 
   // Step 2. 在 constructor 裡面注入 HttpClient
   constructor(
     private alertController: AlertController,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private http: HttpClient,
-    private el: ElementRef<HTMLElement>
+    private http: HttpClient
   ) { }
 
   // Step 3. 撰寫呼叫 api 的程式碼
   ngOnInit() {
-    if(!(JSON.parse(localStorage.getItem('access_token')))) {
+    if (!(JSON.parse(localStorage.getItem('access_token')))) {
       this.navCtrl.navigateForward('/login');
     } else {
-    this.route.params.subscribe(val => this.initialize());
+      this.route.params.subscribe(val => this.initialize());
     }
   }
 
   async initialize() {
-    try {
+    /*try {
       // 在元件初始化的時候，透過後端 api 取得資料
       const response = await this.getAllNotificationsFromApi();
       // Step 5. 將資料顯示到畫面上
@@ -44,18 +46,37 @@ export class Tab1Page implements OnInit {
       // Step 4. 過程中如果發生錯誤，需要另外進行的錯誤處理
       console.error(error);
       this.presentErrorAlert();
+    }*/
+    try {
+      this.accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
+      this.data$ = this.getAllNotifications();
+    } catch (error) {
+      console.error(error);
+      this.presentErrorAlert();
     }
   }
 
   checkSameUser(name) {
     const currentUser = JSON.parse(localStorage.getItem('access_token'))['data']['user']['name'];
-    if(name === currentUser) {
+    if (name === currentUser) {
       return true;
     } else {
       return false;
     }
   }
 
+  getAllNotifications() {
+    const url = 'https://api.cocoing.info/admin/notifications';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.accessToken}`,
+      }),
+    };
+    return this.http.get<any>(url, httpOptions).pipe(
+      map((response) => response.data)
+    )
+  }
+  /*
   async getAllNotificationsFromApi() {
     const url = 'https://api.cocoing.info/admin/notifications';
     const accessToken = JSON.parse(localStorage.getItem('access_token'))['data']['token']['access_token'];
@@ -67,7 +88,7 @@ export class Tab1Page implements OnInit {
     const response = await this.http.get<Response>(url, httpOptions).toPromise();
     return response;
   }
-
+  */
   /**
    * 顯示取得資料失敗的錯誤訊息
    */
@@ -75,7 +96,7 @@ export class Tab1Page implements OnInit {
     const alert = await this.alertController.create({
       header: 'Error',
       message: 'Sorry, please try again.',
-      buttons: [{ text: "Reload", handler: data => { this.ngOnInit(); }}],
+      buttons: [{ text: "Reload", handler: data => { this.ngOnInit(); } }],
     });
 
     alert.present();
@@ -97,7 +118,7 @@ export class Tab1Page implements OnInit {
     try {
       const response = await this.deleteNotificationFromApi(index.id);
       this.initialize();
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       catchError(this.handleError);
     }
@@ -122,7 +143,7 @@ export class Tab1Page implements OnInit {
   async publish(index) {
     try {
       const response = await this.sendNotificationFromApi(index.id);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       catchError(this.handleError);
     }
@@ -139,7 +160,7 @@ export class Tab1Page implements OnInit {
         Authorization: `Bearer ${accessToken}`,
       })
     };
-    return this.http.post<Response>(url, body, httpOptions).subscribe( data => {
+    return this.http.post<Response>(url, body, httpOptions).subscribe(data => {
       this.presentAlert();
     });
   }
@@ -182,7 +203,7 @@ export class Tab1Page implements OnInit {
       }),
     };
 
-    return this.http.delete<Response>(url, httpOptions).subscribe( data => {
+    return this.http.delete<Response>(url, httpOptions).subscribe(data => {
       this.navCtrl.navigateForward('/login');
       localStorage.removeItem('access_token');
     });

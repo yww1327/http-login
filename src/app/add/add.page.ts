@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
-import { catchError } from 'rxjs/operators'; 
+import { catchError } from 'rxjs/operators';
 import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
@@ -21,7 +21,7 @@ export class AddPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    if(!(JSON.parse(localStorage.getItem('access_token')))) {
+    if (!(JSON.parse(localStorage.getItem('access_token')))) {
       this.navCtrl.navigateForward('/login');
     }
   }
@@ -29,7 +29,7 @@ export class AddPage implements OnInit {
   async submit() {
     try {
       const response = await this.creatNewNotificationFromApi(this.title, this.description);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       catchError(this.handleError);
     }
@@ -47,7 +47,7 @@ export class AddPage implements OnInit {
         Authorization: `Bearer ${accessToken}`,
       })
     };
-    const response = await this.http.post<Response>(url, body, httpOptions).subscribe( data => {
+    const response = await this.http.post<Response>(url, body, httpOptions).subscribe(data => {
       this.presentAlert();
       this.navCtrl.navigateForward('/tabs');
     });
