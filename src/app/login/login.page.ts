@@ -59,6 +59,7 @@ export class LoginPage implements OnInit {
     try {
       localStorage.setItem('access_token', JSON.stringify({ authentication: true, data: response['data'] }));
       this.navController.navigateForward('/tabs');
+      console.log('success');
     } catch (error) {
       console.error(error);
     }
