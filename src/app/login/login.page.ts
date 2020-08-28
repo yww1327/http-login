@@ -18,15 +18,15 @@ export class LoginPage implements OnInit {
     private navController: NavController,
     private alertController: AlertController,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
-    if(JSON.parse(localStorage.getItem('access_token'))) {
-      if(JSON.parse(localStorage.getItem('access_token'))['authentication'] === true) {
+    if (JSON.parse(localStorage.getItem('access_token'))) {
+      if (JSON.parse(localStorage.getItem('access_token'))['authentication'] === true) {
         try {
           this.logInByAccessTokenFromApi();
         }
-        catch(error) {
+        catch (error) {
           console.error(error);
         }
       }
@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
   }
 
   async logInFromApi() {
-    const response =  await new Promise((resolve, reject) => {
+    const response = await new Promise((resolve, reject) => {
       const url = 'https://api.cocoing.info/v1/login';
       const body = {
         email: this.email,
@@ -61,7 +61,8 @@ export class LoginPage implements OnInit {
     try {
       localStorage.setItem('access_token', JSON.stringify({ authentication: true, data: response['data'] }));
       this.navController.navigateForward('/tabs');
-    } catch(error) {
+      console.log('success');
+    } catch (error) {
       console.error(error);
     }
   }
@@ -82,7 +83,7 @@ export class LoginPage implements OnInit {
         },
         (err) => {
           console.log('Unauthenticated');
-          if(localStorage.getItem('access_token')) {
+          if (localStorage.getItem('access_token')) {
             localStorage.removeItem('access_token');
           }
           reject(err);
